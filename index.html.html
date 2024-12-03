@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL検索ツール</title>
+</head>
+<body>
+    <h1>URL検索ツール</h1>
+    <form id="searchForm">
+        <label for="query">検索ワード:</label>
+        <input type="text" id="query" placeholder="検索ワードを入力">
+        <button type="button" onclick="search()">検索</button>
+    </form>
+    <h2>検索結果:</h2>
+    <ul id="results"></ul>
+    <hr>
+    <h2>固定表示:</h2>
+    <pre id="fixedDisplay">
+https://direct4b.com/home#/739130036610662400/talks/1159880411510210560
+
+ここにニュースタイトル入力
+SNS非公開お願いします
+
+【コンテンツ管理】記事公開停止の報告
+関係各位
+インターネットニュース班より記事公開停止の報告です。
+
+タイトル：「」
+公開日時：「2024-11-08 18:34」
+ANTS番号：「WS」（062）
+連絡事項：「理由　ダイレクト○さんから指示○：○」
+
+よろしくお願いします。
+    </pre>
+
+    <script>
+        // 対象のURLリスト
+        const TARGET_URLS = [
+            "https://x.com/tv_asahi_news",
+            "https://www.youtube.com/channel/UCGCZAYq5Xxojl_tSXcVJhiQ",
+            "https://www.tiktok.com/@tv_asahi_news?lang=ja-JP"
+        ];
+
+        // 検索処理
+        function search() {
+            const query = document.getElementById('query').value;
+            const resultsElement = document.getElementById('results');
+            const fixedDisplayElement = document.getElementById('fixedDisplay');
+            resultsElement.innerHTML = ''; // 結果をリセット
+
+            if (query) {
+                // 検索結果を表示
+                const results = TARGET_URLS.filter(url => url.includes(query));
+                if (results.length > 0) {
+                    results.forEach(url => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.target = '_blank';
+                        a.textContent = url;
+                        li.appendChild(a);
+                        resultsElement.appendChild(li);
+                    });
+                } else {
+                    resultsElement.textContent = '該当するURLはありません。';
+                }
+
+                // 固定表示に検索ワードを反映
+                fixedDisplayElement.textContent = `
+https://direct4b.com/home#/739130036610662400/talks/1159880411510210560
+
+${query}
+SNS非公開お願いします
+
+【コンテンツ管理】記事公開停止の報告
+関係各位
+インターネットニュース班より記事公開停止の報告です。
+
+タイトル：「${query}」
+公開日時：「2024-11-08 18:34」
+ANTS番号：「WS」（062）
+連絡事項：「理由　ダイレクト○さんから指示○：○」
+
+よろしくお願いします。
+                `.trim();
+            } else {
+                resultsElement.textContent = '検索ワードを入力してください。';
+                fixedDisplayElement.textContent = `
+https://direct4b.com/home#/739130036610662400/talks/1159880411510210560
+
+ここにニュースタイトル入力
+SNS非公開お願いします
+
+【コンテンツ管理】記事公開停止の報告
+関係各位
+インターネットニュース班より記事公開停止の報告です。
+
+タイトル：「」
+公開日時：「2024-11-08 18:34」
+ANTS番号：「WS」（062）
+連絡事項：「理由　ダイレクト○さんから指示○：○」
+
+よろしくお願いします。
+                `.trim();
+            }
+        }
+    </script>
+</body>
+</html>
