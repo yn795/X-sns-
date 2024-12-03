@@ -28,6 +28,13 @@ SNS非公開お願いします
     </div>
 
     <script>
+        // 対象となる公式URL
+        const OFFICIAL_SITES = [
+            "https://x.com/tv_asahi_news",
+            "https://www.youtube.com/channel/UCGCZAYq5Xxojl_tSXcVJhiQ",
+            "https://www.tiktok.com/@tv_asahi_news?lang=ja-JP"
+        ];
+
         document.getElementById('searchForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const newsTitle = document.getElementById('newsTitle').value.trim();
@@ -36,15 +43,15 @@ SNS非公開お願いします
             const dynamicContent = document.getElementById('dynamicContent');
 
             if (newsTitle) {
+                // 検索結果をクリア
+                resultsList.innerHTML = '';
+
                 // 各プラットフォームの検索URLを生成
                 const platforms = {
                     'X': `https://x.com/search?q=${encodeURIComponent(newsTitle)}`,
                     'YouTube': `https://www.youtube.com/results?search_query=${encodeURIComponent(newsTitle)}`,
                     'TikTok': `https://www.tiktok.com/search?q=${encodeURIComponent(newsTitle)}`
                 };
-
-                // 検索結果を表示
-                resultsList.innerHTML = '';
 
                 // 各プラットフォームのリンクを追加
                 for (const [platform, url] of Object.entries(platforms)) {
@@ -64,6 +71,20 @@ SNS非公開お願いします
                 phoneLink.textContent = '電話: 03-6406-1455';
                 phoneListItem.appendChild(phoneLink);
                 resultsList.appendChild(phoneListItem);
+
+                // 公式URLに一致するものをフィルタリングして追加
+                const matchingSites = OFFICIAL_SITES.filter(url => url.toLowerCase().includes(newsTitle.toLowerCase()));
+                if (matchingSites.length > 0) {
+                    matchingSites.forEach(url => {
+                        const listItem = document.createElement('li');
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.target = '_blank';
+                        link.textContent = `公式: ${url}`;
+                        listItem.appendChild(link);
+                        resultsList.appendChild(listItem);
+                    });
+                }
 
                 // 定型文を表示してニュースタイトルを挿入
                 fixedTemplate.style.display = 'block';
