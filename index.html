@@ -16,9 +16,12 @@
 
     <hr>
     <div id="fixedTemplate" style="display: none;">
-        <pre>
-https://direct4b.com/home#/739130036610662400/talks/1159880411510210560
-
+        <p>
+            <a href="https://direct4b.com/home#/739130036610662400/talks/1159880411510210560" target="_blank">
+                https://direct4b.com/home#/739130036610662400/talks/1159880411510210560
+            </a>
+        </p>
+        <pre id="dynamicContent">
 ここにタイトル
 SNS非公開お願いします
         </pre>
@@ -30,6 +33,7 @@ SNS非公開お願いします
             const newsTitle = document.getElementById('newsTitle').value.trim();
             const resultsList = document.getElementById('results');
             const fixedTemplate = document.getElementById('fixedTemplate');
+            const dynamicContent = document.getElementById('dynamicContent');
 
             if (newsTitle) {
                 // 各プラットフォームの検索URLを生成
@@ -63,13 +67,9 @@ SNS非公開お願いします
 
                 // 定型文を表示してニュースタイトルを挿入
                 fixedTemplate.style.display = 'block';
-                fixedTemplate.innerHTML = `
-<pre>
-https://direct4b.com/home#/739130036610662400/talks/1159880411510210560
-
+                dynamicContent.textContent = `
 ${newsTitle}
 SNS非公開お願いします
-</pre>
                 `.trim();
             }
         });
