@@ -14,18 +14,35 @@
     <h2>検索結果:</h2>
     <ul id="results"></ul>
 
+    <hr>
+    <div id="fixedTemplate" style="display: none;">
+        <pre>
+https://direct4b.com/home#/739130036610662400/talks/1159880411510210560
+
+ここにタイトル
+SNS非公開お願いします
+        </pre>
+    </div>
+
     <script>
         document.getElementById('searchForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const newsTitle = document.getElementById('newsTitle').value.trim();
+            const resultsList = document.getElementById('results');
+            const fixedTemplate = document.getElementById('fixedTemplate');
+
             if (newsTitle) {
+                // 各プラットフォームの検索URLを生成
                 const platforms = {
                     'X': `https://x.com/search?q=${encodeURIComponent(newsTitle)}`,
                     'YouTube': `https://www.youtube.com/results?search_query=${encodeURIComponent(newsTitle)}`,
                     'TikTok': `https://www.tiktok.com/search?q=${encodeURIComponent(newsTitle)}`
                 };
-                const resultsList = document.getElementById('results');
+
+                // 検索結果を表示
                 resultsList.innerHTML = '';
+
+                // 各プラットフォームのリンクを追加
                 for (const [platform, url] of Object.entries(platforms)) {
                     const listItem = document.createElement('li');
                     const link = document.createElement('a');
@@ -35,6 +52,25 @@
                     listItem.appendChild(link);
                     resultsList.appendChild(listItem);
                 }
+
+                // 電話番号リンクを追加
+                const phoneListItem = document.createElement('li');
+                const phoneLink = document.createElement('a');
+                phoneLink.href = 'tel:0364061455'; // iPhoneでタップして電話可能
+                phoneLink.textContent = '電話: 03-6406-1455';
+                phoneListItem.appendChild(phoneLink);
+                resultsList.appendChild(phoneListItem);
+
+                // 定型文を表示してニュースタイトルを挿入
+                fixedTemplate.style.display = 'block';
+                fixedTemplate.innerHTML = `
+<pre>
+https://direct4b.com/home#/739130036610662400/talks/1159880411510210560
+
+${newsTitle}
+SNS非公開お願いします
+</pre>
+                `.trim();
             }
         });
     </script>
